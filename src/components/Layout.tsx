@@ -51,7 +51,7 @@ const Layout = ({ children }: LayoutProps) => {
           </button>
           <div className="ml-4 md:ml-0 flex items-center">
             <img src="/accenture-logo.svg" alt="Accenture Logo" className="h-8 w-8" />
-            <span className="ml-2 text-xl font-semibold">Accenture Resources</span>
+            <span className="ml-2 text-xl font-semibold">Accenture SEmarang Resources</span>
           </div>
         </div>
         
