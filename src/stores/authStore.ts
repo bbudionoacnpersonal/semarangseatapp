@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { mockUsers } from '../mockData/users';
 
 export type UserRole = 'project_manager' | 'resource_lead';
 
@@ -18,26 +19,6 @@ interface AuthState {
   logout: () => void;
 }
 
-// Mock users for demo
-const MOCK_USERS = [
-  {
-    id: '1',
-    name: 'John Smith',
-    email: 'john.smith@accenture.com',
-    password: 'manager123',
-    role: 'project_manager' as UserRole,
-    avatarUrl: 'https://i.pravatar.cc/150?u=john',
-  },
-  {
-    id: '2',
-    name: 'Sarah Johnson',
-    email: 'sarah.johnson@accenture.com',
-    password: 'resource123',
-    role: 'resource_lead' as UserRole,
-    avatarUrl: 'https://i.pravatar.cc/150?u=sarah',
-  }
-];
-
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
@@ -50,7 +31,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       // Simulate API request
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const user = MOCK_USERS.find(u => u.email === email && u.password === password);
+      const user = mockUsers.find(u => u.email === email && u.password === password);
       
       if (!user) {
         throw new Error('Invalid credentials');

@@ -1,0 +1,68 @@
+import { SeatLocation } from '../stores/resourceStore';
+
+export const mockSeats: SeatLocation[] = [
+  {
+    id: 's1',
+    name: 'A-101',
+    floor: '1st Floor',
+    section: 'Section A',
+    isAvailable: false,
+    assignedTo: '1',
+  },
+  {
+    id: 's2',
+    name: 'A-102',
+    floor: '1st Floor',
+    section: 'Section A',
+    isAvailable: false,
+    assignedTo: '2',
+  },
+  {
+    id: 's3',
+    name: 'A-103',
+    floor: '1st Floor',
+    section: 'Section A',
+    isAvailable: false,
+    assignedTo: '3',
+  },
+  {
+    id: 's4',
+    name: 'B-201',
+    floor: '2nd Floor',
+    section: 'Section B',
+    isAvailable: false,
+    assignedTo: '4',
+  },
+  {
+    id: 's5',
+    name: 'B-202',
+    floor: '2nd Floor',
+    section: 'Section B',
+    isAvailable: false,
+    assignedTo: '5',
+  },
+  {
+    id: 's6',
+    name: 'B-203',
+    floor: '2nd Floor',
+    section: 'Section B',
+    isAvailable: true,
+    assignedTo: null,
+  },
+  {
+    id: 's7',
+    name: 'C-301',
+    floor: '3rd Floor',
+    section: 'Section C',
+    isAvailable: true,
+    assignedTo: null,
+  },
+  {
+    id: 's8',
+    name: 'C-302',
+    floor: '3rd Floor',
+    section: 'Section C',
+    isAvailable: true,
+    assignedTo: null,
+  },
+];
