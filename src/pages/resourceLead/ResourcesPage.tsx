@@ -3,22 +3,24 @@ import { useResourceStore, Resource } from '../../stores/resourceStore';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Search, Filter, Plus } from 'lucide-react';
+import { ResourceModal } from '../../components/modals/ResourceModal';
 
 const ResourceLeadResourcesPage = () => {
   const { resources, fetchResources, isLoading } = useResourceStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [filteredResources, setFilteredResources] = useState<Resource[]>([]);
+  const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<'view' | 'manage'>('view');
   
   useEffect(() => {
     fetchResources();
   }, [fetchResources]);
   
-  // Filter resources based on search and status
   useEffect(() => {
     let filtered = [...resources];
     
-    // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter(resource => 
         resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -27,7 +29,6 @@ const ResourceLeadResourcesPage = () => {
       );
     }
     
-    // Filter by status
     if (statusFilter !== 'all') {
       filtered = filtered.filter(resource => resource.status === statusFilter);
     }
@@ -35,7 +36,23 @@ const ResourceLeadResourcesPage = () => {
     setFilteredResources(filtered);
   }, [resources, searchTerm, statusFilter]);
   
-  // Get status badge variant
+  const handleViewResource = (resource: Resource) => {
+    setSelectedResource(resource);
+    setModalMode('view');
+    setIsModalOpen(true);
+  };
+
+  const handleManageResource = (resource: Resource) => {
+    setSelectedResource(resource);
+    setModalMode('manage');
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedResource(null);
+  };
+  
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case 'assigned':
@@ -49,7 +66,6 @@ const ResourceLeadResourcesPage = () => {
     }
   };
   
-  // Format status label
   const formatStatusLabel = (status: string) => {
     return status
       .split('_')
@@ -72,9 +88,7 @@ const ResourceLeadResourcesPage = () => {
         </Button>
       </div>
       
-      {/* Search and Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
-        {/* Search */}
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-gray-400" />
@@ -88,7 +102,6 @@ const ResourceLeadResourcesPage = () => {
           />
         </div>
         
-        {/* Status Filter */}
         <div className="flex items-center space-x-1 bg-white border border-accenture-gray-300 rounded-md px-3">
           <Filter className="h-4 w-4 text-accenture-gray-500" />
           <select 
@@ -104,7 +117,6 @@ const ResourceLeadResourcesPage = () => {
         </div>
       </div>
       
-      {/* Resources Table */}
       <div className="bg-white rounded-lg shadow-accenture overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -189,10 +201,19 @@ const ResourceLeadResourcesPage = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleManageResource(resource)}
+                      >
                         Manage
                       </Button>
-                      <Button variant="link" size="sm" className="ml-2">
+                      <Button 
+                        variant="link" 
+                        size="sm" 
+                        className="ml-2"
+                        onClick={() => handleViewResource(resource)}
+                      >
                         View
                       </Button>
                     </td>
@@ -209,6 +230,15 @@ const ResourceLeadResourcesPage = () => {
           </table>
         </div>
       </div>
+
+      {selectedResource && (
+        <ResourceModal
+          resource={selectedResource}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          mode={modalMode}
+        />
+      )}
     </div>
   );
 };
